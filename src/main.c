@@ -72,12 +72,15 @@ int main(void) {
 
 char datei[MAX_LAENGE];
 
+// BibliothekErstellen
 void BibltiothekErstellen(Lied **bibliothek, int *anzahl_lieder) {
+
     //Grundstruktur und deklarationen
     int eintrag = 0;
     char a = 0;
     FILE *fp = NULL;
     fp = fopen(datei, "r");
+
     //Einlesen
     while (( a = (char) fgetc (fp)) != EOF) {
         if ( a == '\n') {
@@ -86,4 +89,19 @@ void BibltiothekErstellen(Lied **bibliothek, int *anzahl_lieder) {
     }
     rewind(fp);
     *bibliothek = (Lied*) malloc((unsigned long) eintrag * sizeof(Lied));
+
+    //Einlesen von Lied bis Trennzeichen (,)
+
+    for (int i = 0; i < eintrag; i++) {
+        fscanf(fp, "%[^,], %[^,], %[^,], %d, %d\n",
+            (*bibliothek)[i].titel, (*bibliothek)[i].interpret, (*bibliothek)[i].album,
+            &(*bibliothek)[i].erscheinungsjahr, &(*bibliothek)[i].lieddauer);
+    }
+    *anzahl_lieder = eintrag;
+    fclose(fp);
+}
+
+//BibliothekAnzeigen
+void BibliothekAnzeigen(Lied **bibliothek, int * anzahl_lieder) {
+
 }
