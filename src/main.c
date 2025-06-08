@@ -12,24 +12,23 @@ typedef struct {
     int erscheinungsjahr;
 } Lied;
 
+// ----- Globale Variablen -----
+char datei[MAX_LAENGE];
+
 // ----- Funktionsdeklarationen -----
 
 void BibliothekErstellen(Lied **bibliothek, int *anzahl_lieder);
 void BibliothekAnzeigen(Lied **bibliothek, int *anzahl_lieder);
 void LiedHinzufuegen(Lied **bibliothek, int *anzahl_lieder);
-void endern(Lied **bibliothek, int *anzahl_lieder);
+void MetaDatenAendern(Lied **bibliothek, int *anzahl_lieder);
 void LiedLoeschen(Lied **bibliothek, int *anzahl_lieder);
 void MetaDatenSuchen(Lied **bibliothek, int *anzahl_lieder);
 void BibliothekLoeschen(Lied **bibliothek, int *anzahl_lieder);
 void Speichern(Lied **bibliothek, int *anzahl_lieder);
 
-
-// --MetaDatenA--- Funkttionsdefinitionen -----
-
-char datei[MAX_LAENGE];
+// ----- Funktionsdefinitionen -----
 
 // --- Programmstart ---
-
 void ProgrammStart(void) {
     int auswahl = 0;
     FILE *fp = NULL;
@@ -107,6 +106,9 @@ int main(void) {
         printf("Wähle eine Aktion aus:\n");
         // Aktionen einbauen !!
 
+        scanf("%d", &auswahl);
+        getchar();
+
         switch (auswahl) {
             case 1:
                 BibliothekErstellen(&bibliothek, &anzahl_lieder);
@@ -135,7 +137,7 @@ int main(void) {
             default:
                 printf("FEHLER: Eingabe ist ungültig!\n");
         }
-    } while (auswahl != 8);
+    } while (auswahl != 0);
     free(bibliothek);
     return 0;
 }
