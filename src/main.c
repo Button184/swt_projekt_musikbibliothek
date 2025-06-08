@@ -12,32 +12,15 @@ typedef struct {
     int erscheinungsjahr;
 } Lied;
 
-void BibliothekErstellen() {
-}
-
-void BibliothekAnzeigen() {
-}
-
-void BibliothekenAusgeben() {
-}
-
-void LiedHinzufuegen() {
-}
-
-void MetaDatenAendern() {
-}
-
-void LiedLoeschen() {
-}
-
-void MetaDatenSuchen() {
-}
-
-void BibliothekLoeschen() {
-}
-
-void Speichern() {
-}
+void BibliothekErstellen();
+void BibliothekAnzeigen();
+void BibliothekenAusgeben();
+void LiedHinzufuegen();
+void MetaDatenAendern();
+void LiedLoeschen();
+void MetaDatenSuchen();
+void BibliothekLoeschen();
+void Speichern();
 
 int main() {
 
