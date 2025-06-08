@@ -85,5 +85,5 @@ void BibltiothekErstellen(Lied **bibliothek, int *anzahl_lieder) {
         }
     }
     rewind(fp);
-    bibliothek = (Lied*) malloc((unsigned long) eintrag * sizeof(Lied));
+    *bibliothek = (Lied*) malloc((unsigned long) eintrag * sizeof(Lied));
 }
