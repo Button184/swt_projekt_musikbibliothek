@@ -69,3 +69,21 @@ int main(void) {
 
     return 0;
 }
+
+char datei[MAX_LAENGE];
+
+void BibltiothekErstellen(Lied **bibliothek, int *anzahl_lieder) {
+    //Grundstruktur und deklarationen
+    int eintrag = 0;
+    char a = 0;
+    FILE *fp = NULL;
+    fp = fopen(datei, "r");
+    //Einlesen
+    while (( a = (char) fgetc (fp)) != EOF) {
+        if ( a == '\n') {
+            eintrag++;
+        }
+    }
+    rewind(fp);
+    bibliothek = (Lied*) malloc((unsigned long) eintrag * sizeof(Lied));
+}
