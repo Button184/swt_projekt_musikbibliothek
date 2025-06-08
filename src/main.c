@@ -42,11 +42,28 @@ int main(void) {
             case 2:
                 BibliothekenAnzeigen(&bibliothek, &anzahl_lieder);
                 break;
-
+            case 3:
+                LiedHinzufuegen(&bibliothek, &anzahl_lieder);
+                break;
+            case 4:
+                MetaDatenAendern(&bibliothek, &anzahl_lieder);
+                break;
+            case 5:
+                LiedLoeschen(&bibliothek, &anzahl_lieder);
+                break;
+            case 6:
+                MetaDatenSuchen(&bibliothek, &anzahl_lieder);
+                break;
+            case 7:
+                BibliothekLoeschen(&bibliothek, &anzahl_lieder);
+                break;
+            case 8:
+                Speichern(&bibliothek, &anzahl_lieder);
+                break;
             default:
                 printf("FEHLER: Eingabe ist ungültig!\n");
         }
-    } while (auswahl != 2); // SPÄTER ANPASSEN !!
+    } while (auswahl != 8);
 
     free(bibliothek);
 
