@@ -27,6 +27,7 @@ int main(void) {
     int auswahl;
     int anzahl_lieder = 0;
 
+    do{
         printf("---------------------------------\n");
         printf("Willkommen in der Musikbibliothek\n");
         printf("---------------------------------\n");
@@ -45,8 +46,9 @@ int main(void) {
             default:
                 printf("FEHLER: Eingabe ist ungültig!\n");
         }
-    while (auswahl != 2); // SPÄTER ANPASSEN !!
-    free(bibliothek)
+    } while (auswahl != 2); // SPÄTER ANPASSEN !!
+
+    free(bibliothek);
 
     return 0;
 }
