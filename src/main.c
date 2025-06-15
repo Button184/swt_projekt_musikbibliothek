@@ -64,19 +64,26 @@ void ProgrammStart(void) {
         printf("Eingabe ungültig\n");
         exit(1);
     }
-
-
-    printf("Gebe einen Namen für die Bibilothek ein: \n");
-    scanf("%s", datei);
-    fp = fopen(datei, "w");
-    fclose(fp);
 }
 
 // --- BibliothekErstellen ---
 void BibliothekErstellen(void) {
     FILE *fp = fopen(datei, "r");
+        if (fp == NULL) {
+            printf("Error: Bibliothek konnte nicht erstellt werden!\n");
+            exit(1);
+        }
+        fclose(fp);
+        printf("Erfolg: Deine Bibliothek '%s' ist erstellt!\n", datei);
+}
 
-    // Falls eine Bibliothek bereits existiert
+void BibliothekAnzeigen(Lied **bibliothek, int *anzahl_lieder) {
+    printf("LEER\n");
+}
+
+void LiedHinzufuegen(Lied **bibliothek, int *anzahl_lieder) {
+
+    FILE *fp = fopen(datei, "x");
     if (fp != NULL) {
         int eintrag = 0;
         int ch;
@@ -111,14 +118,6 @@ void BibliothekErstellen(void) {
         printf("");
     }
 }
-
-void BibliothekAnzeigen(Lied **bibliothek, int *anzahl_lieder) {
-    printf("LEER\n");
-}
-
-void LiedHinzufuegen(Lied **bibliothek, int *anzahl_lieder) {
-    printf("LEER\n");
-}
 void MetaDatenAendern(Lied **bibliothek, int *anzahl_lieder) {
     printf("LEER\n");
 }
@@ -151,14 +150,14 @@ int main(void) {
         printf("---------------------------------\n");
         printf("\n");
         printf("Wähle eine Aktion aus:\n");
-        printf("\n1. Bibliothek Erstellen\n");
-        printf("2. Bibliothek Anzeigen\n");
-        printf("3. Lied Hinzufügen\n");
-        printf("4. Meta-Daten ändern\n");
-        printf("5. Lied löschen\n");
-        printf("6. Nach Lied oder Meta-Daten suchen\n");
-        printf("7. Bibliothek löschen\n");
-        printf("8. Aktion speichern\n");
+        printf("\n1. Bibliothek Anzeigen\n");
+        printf("2. Lied Hinzufügen\n");
+        printf("3. Meta-Daten ändern\n");
+        printf("4. Lied löschen\n");
+        printf("5. Nach Lied oder Meta-Daten suchen\n");
+        printf("6. Bibliothek löschen\n");
+        printf("7. Aktion speichern\n");
+        printf("8. Programm beenden\n");
         printf("\nAktion: ");
 
         scanf("%d", &auswahl);
@@ -166,29 +165,29 @@ int main(void) {
 
         switch (auswahl) {
             case 1:
-                printf("LEER 'WIP'");
-                break;
-            case 2:
                 BibliothekAnzeigen(&bibliothek, &anzahl_lieder);
                 break;
-            case 3:
+            case 2:
                 LiedHinzufuegen(&bibliothek, &anzahl_lieder);
                 break;
-            case 4:
+            case 3:
                 MetaDatenAendern(&bibliothek, &anzahl_lieder);
                 break;
-            case 5:
+            case 4:
                 LiedLoeschen(&bibliothek, &anzahl_lieder);
                 break;
-            case 6:
+            case 5:
                 MetaDatenSuchen(&bibliothek, &anzahl_lieder);
                 break;
-            case 7:
+            case 6:
                 BibliothekLoeschen(&bibliothek, &anzahl_lieder);
                 break;
-            case 8:
+            case 7:
                 Speichern(&bibliothek, &anzahl_lieder);
                 break;
+            case 8:
+                printf("\nAuf Wiedersehen!");
+                exit(1);
             default:
                 printf("FEHLER: Eingabe ist ungültig!\n");
         }
