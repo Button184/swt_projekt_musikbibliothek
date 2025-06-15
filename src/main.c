@@ -39,6 +39,10 @@ void ProgrammStart(Lied **bibliothek, int *anzahl_lieder) {
     scanf("%d", &auswahl);
     getchar();
 
+    printf("Gebe den Namen deiner Bibliothek ein:\n");
+    scanf("%s", datei);
+    getchar();
+
     if (auswahl == 1) {
         FILE *fp = fopen(datei, "r");
         if (fp == NULL) {
@@ -47,13 +51,19 @@ void ProgrammStart(Lied **bibliothek, int *anzahl_lieder) {
         }
         fclose(fp);
         BibliothekErstellen(bibliothek, anzahl_lieder);
-        printf("Deine Bibliothek wurde gefunden und geladen.");
+        printf("Deine Bibliothek wurde gefunden und geladen.\n");
     } else if (auswahl == 2) {
         FILE *fp = fopen(datei, "w");
         if (fp == NULL) {
             printf("Eine neue Bibliothek konnte nicht erstellt werden.\n");
             exit(1);
         }
+        fclose(fp);
+        BibliothekErstellen(bibliothek, anzahl_lieder);
+        printf("Eine neue Bibliothek wurde erstellt\n.");
+    } else {
+        printf("Eingabe ungültig\n");
+        exit(1);
     }
 
 
