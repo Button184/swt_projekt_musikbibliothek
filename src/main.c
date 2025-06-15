@@ -42,7 +42,7 @@ void ProgrammStart(Lied **bibliothek, int *anzahl_lieder) {
     if (auswahl == 1) {
         FILE *fp = fopen(datei, "r");
         if (fp == NULL) {
-            printf("Deine Bibliothek konnte nicht gefunden werden.");
+            printf("Deine Bibliothek konnte nicht gefunden werden.\n");
             exit(1);
         }
         fclose(fp);
@@ -50,6 +50,10 @@ void ProgrammStart(Lied **bibliothek, int *anzahl_lieder) {
         printf("Deine Bibliothek wurde gefunden und geladen.");
     } else if (auswahl == 2) {
         FILE *fp = fopen(datei, "w");
+        if (fp == NULL) {
+            printf("Eine neue Bibliothek konnte nicht erstellt werden.\n");
+            exit(1);
+        }
     }
 
 
