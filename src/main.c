@@ -17,7 +17,7 @@ char datei[MAX_LAENGE];
 
 // ----- Funktionsdeklarationen -----
 
-void BibliothekErstellen(Lied **bibliothek, int *anzahl_lieder);
+void BibliothekErstellen();
 void BibliothekAnzeigen(Lied **bibliothek, int *anzahl_lieder);
 void LiedHinzufuegen(Lied **bibliothek, int *anzahl_lieder);
 void MetaDatenAendern(Lied **bibliothek, int *anzahl_lieder);
@@ -29,38 +29,37 @@ void Speichern(Lied **bibliothek, int *anzahl_lieder);
 // ----- Funktionsdefinitionen -----
 
 // --- Programmstart ---
-void ProgrammStart(Lied **bibliothek, int *anzahl_lieder) {
+void ProgrammStart(void) {
     int auswahl = 0;
     FILE *fp = NULL;
+    char name[MAX_LAENGE]; // KI-Hilfe
 
-    printf("\n------Willkommen!------\n\nSoll eine bestehende Bibliothek geladen, oder eine neue Bibliothek erstellt werden?\n");
+    printf("\n------Willkommen!------\n");
+    printf("\nSoll eine bestehende Bibliothek geladen, oder eine neue Bibliothek erstellt werden?\n");
     printf("\nAchtung: Eine neue Bibliothek überschreibt die alte Bibliothek!\n");
-    printf("\nDrücke 1 um eine Bibliothek zu laden und 2 um eine neue zu erstellen.\n");
+    printf("\n Bibliothek laden: (1)\nNeue Bibliothek erstellen: (2)\n");
     scanf("%d", &auswahl);
     getchar();
 
-    printf("Gebe den Namen deiner Bibliothek ein:\n");
-    scanf("%s", datei);
-    getchar();
-
     if (auswahl == 1) {
-        FILE *fp = fopen(datei, "r");
+        printf("Gebe den Namen deiner Bibliothek ein (mit .csv-Endung!):\n");
+        scanf("%s", name); // KI-Hilfe
+        snprintf(datei, MAX_LAENGE, "%s.csv", name); // KI-Hilfe
+
+        fp = fopen(datei, "r");
         if (fp == NULL) {
-            printf("Deine Bibliothek konnte nicht gefunden werden.\n");
+            printf("Diese Bibliothek konnte nicht gefunden werden.\n");
             exit(1);
+        } else {
+            printf("Deine Bibliothek wurde gefunden und geladen.\n");
+            fclose(fp);
         }
-        fclose(fp);
-        BibliothekErstellen(bibliothek, anzahl_lieder);
-        printf("Deine Bibliothek wurde gefunden und geladen.\n");
+
     } else if (auswahl == 2) {
-        FILE *fp = fopen(datei, "w");
-        if (fp == NULL) {
-            printf("Eine neue Bibliothek konnte nicht erstellt werden.\n");
-            exit(1);
-        }
-        fclose(fp);
-        BibliothekErstellen(bibliothek, anzahl_lieder);
-        printf("Eine neue Bibliothek wurde erstellt\n.");
+        printf("Gebe deiner Bibliothek einen Namen (mit .csv-Endung!): ");
+        scanf("%s", name);
+        snprintf(datei, MAX_LAENGE, "%s.csv",name); // KI-Hilfe
+        BibliothekErstellen();
     } else {
         printf("Eingabe ungültig\n");
         exit(1);
@@ -74,48 +73,66 @@ void ProgrammStart(Lied **bibliothek, int *anzahl_lieder) {
 }
 
 // --- BibliothekErstellen ---
-void BibliothekErstellen(Lied **bibliothek, int *anzahl_lieder) {
-
-    //Grundstruktur und deklarationen
-    int eintrag = 0;
+void BibliothekErstellen(void) {
     FILE *fp = fopen(datei, "r");
 
+    // Falls eine Bibliothek bereits existiert
+    if (fp != NULL) {
+        int eintrag = 0;
+        int ch;
 
-    *bibliothek = malloc (eintrag * sizeof(Lied));
+        // Einlesen der Bibliothek zeichen für zeichen bis zu Zeilensprung "\n"
+        while ((ch = fgetc(fp)) != EOF) {
+            if (ch == '\n') {
+                eintrag++;
+            }
+        }
+        rewind(fp);
+
+        *bibliothek = malloc (eintrag * sizeof(Lied));
 
     //Einlesen von Lied bis Trennzeichen (,)
 
-    for (int i = 0; i < eintrag; i++) {
-        fscanf(fp, "%[^,],%[^,],%[^,],%d,%d\n",
-            (*bibliothek)[i].titel, (*bibliothek)[i].interpret, (*bibliothek)[i].album,
-            &(*bibliothek)[i].erscheinungsjahr, &(*bibliothek)[i].lieddauer);
+        for (int i = 0; i < eintrag; i++) {
+            fscanf(fp, "%[^,],%[^,],%[^,],%d,%d\n",
+                (*bibliothek)[i].titel, (*bibliothek)[i].interpret, (*bibliothek)[i].album,
+                &(*bibliothek)[i].erscheinungsjahr, &(*bibliothek)[i].lieddauer);
+        }
+        *anzahl_lieder = eintrag;
+        fclose(fp);
+        printf("\nDeine Bibliothek geladen!\n");
+    } else { // Falls noch keine Bibliothek besteht
+        fp = fopen(datei, "w");
+        if (fp == NULL) {
+            printf("Error bei Dateierstellung.\n");
+            exit(1);
+        }
+        int x;
+        printf("");
     }
-    *anzahl_lieder = eintrag;
-    fclose(fp);
-    printf("\nDeine Bibliothek wurde erstellt!\n");
 }
 
 void BibliothekAnzeigen(Lied **bibliothek, int *anzahl_lieder) {
-    printf("LEER");
+    printf("LEER\n");
 }
 
 void LiedHinzufuegen(Lied **bibliothek, int *anzahl_lieder) {
-    printf("LEER");
+    printf("LEER\n");
 }
 void MetaDatenAendern(Lied **bibliothek, int *anzahl_lieder) {
-    printf("LEER");
+    printf("LEER\n");
 }
 void LiedLoeschen(Lied **bibliothek, int *anzahl_lieder) {
-printf("LEER");
+printf("LEER\n");
 }
 void MetaDatenSuchen(Lied **bibliothek, int *anzahl_lieder) {
-printf("LEER");
+printf("LEER\n");
 }
 void BibliothekLoeschen(Lied **bibliothek, int *anzahl_lieder) {
-printf("LEER");
+printf("LEER\n");
 }
 void Speichern(Lied **bibliothek, int *anzahl_lieder){
-printf("LEER");
+printf("LEER\n");
 }
 
 // ----- Mainfunktion -----
@@ -126,15 +143,15 @@ int main(void) {
     int auswahl;
     int anzahl_lieder = 0;
 
-    ProgrammStart(&bibliothek, &anzahl_lieder);
+    ProgrammStart();
 
     do{
-        printf("---------------------------------\n");
+        printf("\n---------------------------------\n");
         printf("Willkommen in der Musikbibliothek\n");
         printf("---------------------------------\n");
         printf("\n");
         printf("Wähle eine Aktion aus:\n");
-        printf("1. Bibliothek Erstellen\n");
+        printf("\n1. Bibliothek Erstellen\n");
         printf("2. Bibliothek Anzeigen\n");
         printf("3. Lied Hinzufügen\n");
         printf("4. Meta-Daten ändern\n");
@@ -142,13 +159,14 @@ int main(void) {
         printf("6. Nach Lied oder Meta-Daten suchen\n");
         printf("7. Bibliothek löschen\n");
         printf("8. Aktion speichern\n");
+        printf("\nAktion: ");
 
         scanf("%d", &auswahl);
         getchar();
 
         switch (auswahl) {
             case 1:
-                BibliothekErstellen(&bibliothek, &anzahl_lieder);
+                printf("LEER 'WIP'");
                 break;
             case 2:
                 BibliothekAnzeigen(&bibliothek, &anzahl_lieder);
