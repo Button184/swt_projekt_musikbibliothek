@@ -117,6 +117,11 @@ void LiedHinzufuegen(Lied **bibliothek, int *anzahl_lieder) {
         return;
     }
 
+    fprintf(fp, "%s,%s,%s,%d,%d\n",
+        (*bibliothek)[*anzahl_lieder].titel, (*bibliothek)[*anzahl_lieder].interpret,
+        (*bibliothek)[*anzahl_lieder].album, (*bibliothek)[*anzahl_lieder].lieddauer,
+        (*bibliothek)[*anzahl_lieder].erscheinungsjahr );
+
     fclose(fp);
     printf("\nDein Lied wurde hinzugefügt!\n");
 
