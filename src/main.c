@@ -42,7 +42,7 @@ void ProgrammStart(void) {
     getchar();
 
     if (auswahl == 1) {
-        printf("Gebe den Namen deiner Bibliothek ein (mit .csv-Endung!):\n");
+        printf("Gebe den Namen deiner Bibliothek ein (ohne .csv-Endung!):\n");
         scanf("%s", name); // KI-Hilfe
         snprintf(datei, MAX_LAENGE, "%s.csv", name); // KI-Hilfe
 
@@ -68,7 +68,7 @@ void ProgrammStart(void) {
 
 // --- Bibliothek Erstellen ---
 void BibliothekErstellen(void) {
-    FILE *fp = fopen(datei, "r");
+    FILE *fp = fopen(datei, "w");
         if (fp == NULL) {
             printf("Error: Bibliothek konnte nicht erstellt werden!\n");
             exit(1);
@@ -94,32 +94,33 @@ void BibliothekAnzeigen(Lied **bibliothek, int *anzahl_lieder) {
 
 // --- Lied Hinzufügen ---
 void LiedHinzufuegen(Lied **bibliothek, int *anzahl_lieder) {
-    FILE *fp = fopen(datei, "a");
-    if (fp == NULL) {
-        printf("Error: Deine Bibliothek konnte nicht geöffnet werden.\n");
-        return;
-    }
-
 
     *bibliothek = realloc(*bibliothek, (*anzahl_lieder + 1) * sizeof(Lied));
-    Lied *lied =&((*bibliothek) [*anzahl_lieder]);
+    Lied *lied = &(*bibliothek) [*anzahl_lieder];
 
     printf("\n Füge ein neues Lied hinzu:\n");
 
-    printf("Titel:");
+    printf("Titel: ");
     scanf(" %[^\n]", (*bibliothek)[*anzahl_lieder].titel);
-    printf("Interpet:");
-    scanf(" %[^\n]", (*bibliothek)[*anzahl_lieder].titel);
-    printf("Album:");
-    scanf(" %[^\n]", (*bibliothek)[*anzahl_lieder].titel);
-    printf("Lieddauer:");
-    scanf(" %d", (*bibliothek)[*anzahl_lieder].titel);
-    printf("Erscheinungsjahr:");
-    scanf(" %d", (*bibliothek)[*anzahl_lieder].titel);
+    printf("Interpet: ");
+    scanf(" %[^\n]", (*bibliothek)[*anzahl_lieder].interpret);
+    printf("Album: ");
+    scanf(" %[^\n]", (*bibliothek)[*anzahl_lieder].album);
+    printf("Lieddauer (in sekunden): ");
+    scanf(" %d", &(*bibliothek)[*anzahl_lieder].lieddauer);
+    printf("Erscheinungsjahr: ");
+    scanf(" %d", &(*bibliothek)[*anzahl_lieder].erscheinungsjahr);
 
-    printf("Dein Lied wurde hinzugefügt!\n");
+    FILE *fp = fopen(datei, "a");
+    if (fp == NULL) {
+        printf("Error: Datei konnte nicht beschrieben werden.\n");
+        return;
+    }
 
-    anzahl_lieder++;
+    fclose(fp);
+    printf("\nDein Lied wurde hinzugefügt!\n");
+
+    (*anzahl_lieder)++;
 }
 
 // --- Meta-Daten ändern ---
