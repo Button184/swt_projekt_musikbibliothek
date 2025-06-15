@@ -29,9 +29,29 @@ void Speichern(Lied **bibliothek, int *anzahl_lieder);
 // ----- Funktionsdefinitionen -----
 
 // --- Programmstart ---
-void ProgrammStart(void) {
+void ProgrammStart(Lied **bibliothek, int *anzahl_lieder) {
     int auswahl = 0;
     FILE *fp = NULL;
+
+    printf("\n------Willkommen!------\n\nSoll eine bestehende Bibliothek geladen, oder eine neue Bibliothek erstellt werden?\n");
+    printf("\nAchtung: Eine neue Bibliothek überschreibt die alte Bibliothek!\n");
+    printf("\nDrücke 1 um eine Bibliothek zu laden und 2 um eine neue zu erstellen.\n");
+    scanf("%d", &auswahl);
+    getchar();
+
+    if (auswahl == 1) {
+        FILE *fp = fopen(datei, "r");
+        if (fp == NULL) {
+            printf("Deine Bibliothek konnte nicht gefunden werden.");
+            exit(1);
+        }
+        fclose(fp);
+        BibliothekErstellen(bibliothek, anzahl_lieder);
+        printf("Deine Bibliothek wurde gefunden und geladen.");
+    } else if (auswahl == 2) {
+        FILE *fp = fopen(datei, "w");
+    }
+
 
     printf("Gebe einen Namen für die Bibilothek ein: \n");
     scanf("%s", datei);
@@ -44,16 +64,9 @@ void BibliothekErstellen(Lied **bibliothek, int *anzahl_lieder) {
 
     //Grundstruktur und deklarationen
     int eintrag = 0;
-    int ch;
     FILE *fp = fopen(datei, "r");
 
-    //Einlesen
-    while (( ch = fgetc(fp)) != EOF ) {
-        if ( ch == '\n') {
-            eintrag++;
-        }
-    }
-    rewind(fp);
+
     *bibliothek = malloc (eintrag * sizeof(Lied));
 
     //Einlesen von Lied bis Trennzeichen (,)
@@ -65,6 +78,7 @@ void BibliothekErstellen(Lied **bibliothek, int *anzahl_lieder) {
     }
     *anzahl_lieder = eintrag;
     fclose(fp);
+    printf("\nDeine Bibliothek wurde erstellt!\n");
 }
 
 void BibliothekAnzeigen(Lied **bibliothek, int *anzahl_lieder) {
@@ -97,6 +111,8 @@ int main(void) {
     Lied *bibliothek = NULL;
     int auswahl;
     int anzahl_lieder = 0;
+
+    ProgrammStart(&bibliothek, &anzahl_lieder);
 
     do{
         printf("---------------------------------\n");
