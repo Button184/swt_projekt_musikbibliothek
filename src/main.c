@@ -104,7 +104,14 @@ int main(void) {
         printf("---------------------------------\n");
         printf("\n");
         printf("Wähle eine Aktion aus:\n");
-        // Aktionen einbauen !!
+        printf("1. Bibliothek Erstellen\n");
+        printf("2. Bibliothek Anzeigen\n");
+        printf("3. Lied Hinzufügen\n");
+        printf("4. Meta-Daten ändern\n");
+        printf("5. Lied löschen\n");
+        printf("6. Nach Lied oder Meta-Daten suchen\n");
+        printf("7. Bibliothek löschen\n");
+        printf("8. Aktion speichern\n");
 
         scanf("%d", &auswahl);
         getchar();
