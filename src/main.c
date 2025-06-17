@@ -18,7 +18,7 @@ char datei[MAX_LAENGE];
 // ----- Funktionsdeklarationen -----
 
 void BibliothekErstellen();
-void BibliothekAnzeigen(Lied **bibliothek, int *anzahl_lieder);
+void BibliothekAnzeigen(Lied *bibliothek, int anzahl_lieder);
 void LiedHinzufuegen(Lied **bibliothek, int *anzahl_lieder);
 void MetaDatenAendern(Lied **bibliothek, int *anzahl_lieder);
 void LiedLoeschen(Lied **bibliothek, int *anzahl_lieder);
@@ -34,9 +34,9 @@ void ProgrammStart(void) {
     FILE *fp = NULL;
     char name[MAX_LAENGE]; // KI-Hilfe
 
-    printf("\n------Willkommen!------\n");
+    printf("\n========================= Willkommen!=========================\n");
     printf("\nSoll eine bestehende Bibliothek geladen, oder eine neue Bibliothek erstellt werden?\n");
-    printf("\nAchtung: Eine neue Bibliothek überschreibt die alte Bibliothek!\n");
+    //printf("\nAchtung: Eine neue Bibliothek überschreibt die alte Bibliothek!\n");
     printf("\n Bibliothek laden: (1)\nNeue Bibliothek erstellen: (2)\n");
     scanf("%d", &auswahl);
     getchar();
@@ -78,19 +78,27 @@ void BibliothekErstellen(void) {
 }
 
 // --- Bibliothek Anzeigen ---
-void BibliothekAnzeigen(Lied **bibliothek, int *anzahl_lieder) {
-    printf("LEER\n");
+void BibliothekAnzeigen(Lied *bibliothek, int anzahl_lieder) {
+    int i = 0;
+    FILE *fp = fopen(datei, "r");
 
-    /*
+    printf("-------- Bibliothek Anzeigen --------\n");
 
-    //Einlesen von Lied bis Trennzeichen (,)
-
-        for (int i = 0; i < eintrag; i++) {
-            fscanf(fp, "%[^,],%[^,],%[^,],%d,%d\n",
-                (*bibliothek)[i].titel, (*bibliothek)[i].interpret, (*bibliothek)[i].album,
-                &(*bibliothek)[i].erscheinungsjahr, &(*bibliothek)[i].lieddauer);
-    */
+    if (anzahl_lieder == 0) {
+        printf("Error: Deine Bibliothek ist leer.\n");
+    } else {
+        //Einlesen von Lied bis Trennzeichen (,) und das für alle 5 Columns
+        while (fscanf (fp, "%[^,], %[^,], %[^,], %d, %d\n",
+            bibliothek[i].titel, bibliothek[i].interpret, bibliothek[i].album,
+            bibliothek[i].erscheinungsjahr, bibliothek[i].lieddauer) == 5) {
+            i++;
+        }
+        anzahl_lieder = i;
+        fclose(fp);
+    }
 }
+
+
 
 // --- Lied Hinzufügen ---
 void LiedHinzufuegen(Lied **bibliothek, int *anzahl_lieder) {
