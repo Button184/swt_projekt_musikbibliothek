@@ -1,7 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-#define MAX_LAENGE 50
+#define MAX_LAENGE 100
 
 // --- Struct Lied ---
 typedef struct {
@@ -18,7 +18,8 @@ char datei[MAX_LAENGE];
 // ----- Funktionsdeklarationen -----
 
 void BibliothekErstellen();
-void BibliothekAnzeigen(Lied *bibliothek, int anzahl_lieder);
+//void BibliothekAnzeigen(Lied *bibliothek, int anzahl_lieder);
+void BibliothekAnzeigen(void);
 void LiedHinzufuegen(Lied **bibliothek, int *anzahl_lieder);
 void MetaDatenAendern(Lied **bibliothek, int *anzahl_lieder);
 void LiedLoeschen(Lied **bibliothek, int *anzahl_lieder);
@@ -62,6 +63,7 @@ void ProgrammStart(void) {
         BibliothekErstellen();
     } else {
         printf("Eingabe ungültig\n");
+        printf("Programm wird beendet...");
         exit(1);
     }
 }
@@ -78,24 +80,32 @@ void BibliothekErstellen(void) {
 }
 
 // --- Bibliothek Anzeigen ---
-void BibliothekAnzeigen(Lied *bibliothek, int anzahl_lieder) {
+// Daten werden in eine temporäre Variable geladen und wieder an den dynamischen Array zurückgegeben
+void BibliothekAnzeigen(void) {
     int i = 0;
+    Lied temp;
     FILE *fp = fopen(datei, "r");
+
+    if (fp == NULL) {
+        printf("Feher beim Öffnen deiner Bibliothek!\n");
+        return;
+    }
 
     printf("-------- Bibliothek Anzeigen --------\n");
 
-    if (anzahl_lieder == 0) {
-        printf("Error: Deine Bibliothek ist leer.\n");
-    } else {
         //Einlesen von Lied bis Trennzeichen (,) und das für alle 5 Columns
-        while (fscanf (fp, "%[^,], %[^,], %[^,], %d, %d\n",
-            bibliothek[i].titel, bibliothek[i].interpret, bibliothek[i].album,
-            bibliothek[i].erscheinungsjahr, bibliothek[i].lieddauer) == 5) {
-            i++;
-        }
-        anzahl_lieder = i;
-        fclose(fp);
+    while (fscanf (fp, "%[^,], %[^,], %[^,], %d, %d\n",
+        temp.titel, temp.interpret, temp.album, temp.lieddauer, temp.erscheinungsjahr) == 5) {
+            printf("\n%d\n", ++i);
+            printf("%s\n",temp.titel);
+            printf("%s\n", temp.interpret);
+            printf("%d\n", temp.lieddauer);
+            printf("%d\n", temp.erscheinungsjahr);
     }
+    if (i == 0) {
+        printf("Error: Deine Bibliothek ist leer.\n");
+    }
+    fclose(fp);
 }
 
 
@@ -192,7 +202,8 @@ int main(void) {
 
         switch (auswahl) {
             case 1:
-                BibliothekAnzeigen(&bibliothek, &anzahl_lieder);
+                //BibliothekAnzeigen(&bibliothek, &anzahl_lieder);
+                BibliothekAnzeigen();
                 break;
             case 2:
                 LiedHinzufuegen(&bibliothek, &anzahl_lieder);
