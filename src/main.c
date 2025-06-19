@@ -94,13 +94,13 @@ void BibliothekAnzeigen(void) {
     printf("-------- Bibliothek Anzeigen --------\n");
 
         //Einlesen von Lied bis Trennzeichen (,) und das für alle 5 Columns
-    while (fscanf (fp, "%[^,], %[^,], %[^,], %d, %d\n",
+    while (fscanf (fp, "%[^,],%[^,],%[^,],%d,%d\n",
         temp.titel, temp.interpret, temp.album, temp.lieddauer, temp.erscheinungsjahr) == 5) {
-            printf("\n%d\n", ++i);
-            printf("%s\n",temp.titel);
-            printf("%s\n", temp.interpret);
-            printf("%d\n", temp.lieddauer);
-            printf("%d\n", temp.erscheinungsjahr);
+            printf("\nLied %d: \n", ++i);
+            printf("Titel: %s\n",temp.titel);
+            printf("Interpret: %s\n", temp.interpret);
+            printf("Lieddauer (sek): %d\n", &temp.lieddauer);
+            printf("Erschienen: %d\n", &temp.erscheinungsjahr);
     }
     if (i == 0) {
         printf("Error: Deine Bibliothek ist leer.\n");
