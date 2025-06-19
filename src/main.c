@@ -13,7 +13,7 @@ typedef struct {
 } Lied;
 
 // ----- Globale Variablen -----
-char datei[MAX_LAENGE];
+char datei[MAX_LAENGE + 10]; // erweitert um einen Puffer für .csv-Endung und \0
 
 // ----- Funktionsdeklarationen -----
 
@@ -37,8 +37,7 @@ void ProgrammStart(void) {
 
     printf("\n========================= Willkommen!=========================\n");
     printf("\nSoll eine bestehende Bibliothek geladen, oder eine neue Bibliothek erstellt werden?\n");
-    //printf("\nAchtung: Eine neue Bibliothek überschreibt die alte Bibliothek!\n");
-    printf("\n Bibliothek laden: (1)\nNeue Bibliothek erstellen: (2)\n");
+    printf("\nEine vorhandene Bibliothek laden: Drücke (1)\nEine neue Bibliothek erstellen: Drücke (2)\n");
     scanf("%d", &auswahl);
     getchar();
 
@@ -68,6 +67,27 @@ void ProgrammStart(void) {
     }
 }
 
+void BibliothekLaden(Lied **bibliothek, int *anzahl_lieder) {
+    FILE *fp = fopen(datei, "w");
+    if (fp == NULL) {
+        printf("Fehler beim laden deiner Bibliothek!\n");
+        return;
+    }
+
+    Lied temp;
+    *anzahl_lieder = 0;
+    *bibliothek = NULL;
+
+    while (fscanf (fp, "%[^,],%[^,],%[^,],%d,%d\n",
+        temp.titel, temp.interpret, temp.album, &temp.lieddauer, &temp.erscheinungsjahr) == 5) {
+            *bibliothek = realloc(*bibliothek, (*anzahl_lieder + 1) * sizeof(Lied));
+            (*bibliothek)[*anzahl_lieder] = temp;
+            (*anzahl_lieder)++;
+    }
+    fclose(fp);
+}
+
+
 // --- Bibliothek Erstellen ---
 void BibliothekErstellen(void) {
     FILE *fp = fopen(datei, "w");
@@ -91,7 +111,7 @@ void BibliothekAnzeigen(void) {
         return;
     }
 
-    printf("-------- Bibliothek Anzeigen --------\n");
+    printf("\n-------- Deine Bibliothek --------\n");
 
         //Einlesen von Lied bis Trennzeichen (,) und das für alle 5 Columns
     while (fscanf (fp, "%[^,],%[^,],%[^,],%d,%d\n",
@@ -112,7 +132,6 @@ void BibliothekAnzeigen(void) {
     printf("\nTaste drücken, um zum Menü zu gelangen..\n");
     getchar();
 }
-
 
 
 // --- Lied Hinzufügen ---
@@ -158,7 +177,27 @@ void MetaDatenAendern(Lied **bibliothek, int *anzahl_lieder) {
 
 // --- Lied löschen ---
 void LiedLoeschen(Lied **bibliothek, int *anzahl_lieder) {
-printf("LEER\n");
+
+    if (*anzahl_lieder == 0) {
+        printf("Deine Bibliothek ist leer :/\n");
+        return;
+    }
+
+    int num;
+
+    printf("\n-------- Deine Bibliothek (Meta-Daten gekürzt) --------\n");
+    for (int i = 0; i < anzahl_lieder; i++) {
+        printf("%d. %s - %s\n", i + 1, (*bibliothek)[i].titel, (*bibliothek)[i].interpret);
+    }
+
+    printf("Wähle ein Lied aus der Liste aus, dass du löschen möchtest und gebe die Liednummer ein: ");
+    scanf("%d", &num);
+    getchar();
+
+
+printf("Das Lied wurde gelöscht. Drücke eine Taste, um zum Menü zu gelangen.\n");
+getchar();
+
 }
 
 // --- Meta-Daten suchen ---
@@ -185,6 +224,7 @@ int main(void) {
     int anzahl_lieder = 0;
 
     ProgrammStart();
+    BibliothekLaden(&bibliothek, &anzahl_lieder);
 
     do{
         printf("\n---------------------------------\n");
