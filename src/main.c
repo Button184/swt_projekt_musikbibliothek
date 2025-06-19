@@ -95,16 +95,18 @@ void BibliothekAnzeigen(void) {
 
         //Einlesen von Lied bis Trennzeichen (,) und das für alle 5 Columns
     while (fscanf (fp, "%[^,],%[^,],%[^,],%d,%d\n",
-        temp.titel, temp.interpret, temp.album, temp.lieddauer, temp.erscheinungsjahr) == 5) {
+        temp.titel, temp.interpret, temp.album, &temp.lieddauer, &temp.erscheinungsjahr) == 5) {
             printf("\nLied %d: \n", ++i);
             printf("Titel: %s\n",temp.titel);
             printf("Interpret: %s\n", temp.interpret);
-            printf("Lieddauer (sek): %d\n", &temp.lieddauer);
-            printf("Erschienen: %d\n", &temp.erscheinungsjahr);
+            printf("Album: %s\n", temp.album);
+            printf("Lieddauer in (sek): %d\n", temp.lieddauer);
+            printf("Erschienen: %d\n", temp.erscheinungsjahr);
     }
     if (i == 0) {
         printf("Error: Deine Bibliothek ist leer.\n");
     }
+
     fclose(fp);
 }
 
@@ -141,7 +143,7 @@ void LiedHinzufuegen(Lied **bibliothek, int *anzahl_lieder) {
         (*bibliothek)[*anzahl_lieder].erscheinungsjahr );
 
     fclose(fp);
-    printf("\nDein Lied wurde hinzugefügt!\n");
+    printf("\nDein Lied wurde zur Playlist hinzugefügt!\n");
 
     (*anzahl_lieder)++;
 }
