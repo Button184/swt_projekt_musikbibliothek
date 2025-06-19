@@ -18,7 +18,6 @@ char datei[MAX_LAENGE + 10]; // erweitert um einen Puffer für .csv-Endung und \
 // ----- Funktionsdeklarationen -----
 
 void BibliothekErstellen();
-//void BibliothekAnzeigen(Lied *bibliothek, int anzahl_lieder);
 void BibliothekAnzeigen(void);
 void LiedHinzufuegen(Lied **bibliothek, int *anzahl_lieder);
 void MetaDatenAendern(Lied **bibliothek, int *anzahl_lieder);
@@ -65,26 +64,6 @@ void ProgrammStart(void) {
         printf("Programm wird beendet...");
         exit(1);
     }
-}
-
-void BibliothekLaden(Lied **bibliothek, int *anzahl_lieder) {
-    FILE *fp = fopen(datei, "w");
-    if (fp == NULL) {
-        printf("Fehler beim laden deiner Bibliothek!\n");
-        return;
-    }
-
-    Lied temp;
-    *anzahl_lieder = 0;
-    *bibliothek = NULL;
-
-    while (fscanf (fp, "%[^,],%[^,],%[^,],%d,%d\n",
-        temp.titel, temp.interpret, temp.album, &temp.lieddauer, &temp.erscheinungsjahr) == 5) {
-            *bibliothek = realloc(*bibliothek, (*anzahl_lieder + 1) * sizeof(Lied));
-            (*bibliothek)[*anzahl_lieder] = temp;
-            (*anzahl_lieder)++;
-    }
-    fclose(fp);
 }
 
 
@@ -178,6 +157,12 @@ void MetaDatenAendern(Lied **bibliothek, int *anzahl_lieder) {
 // --- Lied löschen ---
 void LiedLoeschen(Lied **bibliothek, int *anzahl_lieder) {
 
+    FILE *fp = fopen(datei, "r");
+    if (fp == NULL) {
+        printf("Error: Fehler beim Aufruf deiner Bibliothek.\n");
+        return;
+    }
+
     if (*anzahl_lieder == 0) {
         printf("Deine Bibliothek ist leer :/\n");
         return;
@@ -186,7 +171,7 @@ void LiedLoeschen(Lied **bibliothek, int *anzahl_lieder) {
     int num;
 
     printf("\n-------- Deine Bibliothek (Meta-Daten gekürzt) --------\n");
-    for (int i = 0; i < anzahl_lieder; i++) {
+    for (int i = 0; i < *anzahl_lieder; i++) {
         printf("%d. %s - %s\n", i + 1, (*bibliothek)[i].titel, (*bibliothek)[i].interpret);
     }
 
@@ -194,9 +179,11 @@ void LiedLoeschen(Lied **bibliothek, int *anzahl_lieder) {
     scanf("%d", &num);
     getchar();
 
+    (*anzahl_lieder)--;
 
-printf("Das Lied wurde gelöscht. Drücke eine Taste, um zum Menü zu gelangen.\n");
-getchar();
+
+    printf("Das Lied wurde gelöscht. Drücke eine Taste, um zum Menü zu gelangen.\n");
+    getchar();
 
 }
 
@@ -211,6 +198,7 @@ printf("LEER\n");
 }
 
 // --- Aktion speichern ---
+// Es soll alles Temporäre vom Arbeitsspeicher fest gespeichert werden
 void Speichern(Lied **bibliothek, int *anzahl_lieder){
 printf("LEER\n");
 }
@@ -224,7 +212,6 @@ int main(void) {
     int anzahl_lieder = 0;
 
     ProgrammStart();
-    BibliothekLaden(&bibliothek, &anzahl_lieder);
 
     do{
         printf("\n---------------------------------\n");
@@ -247,7 +234,6 @@ int main(void) {
 
         switch (auswahl) {
             case 1:
-                //BibliothekAnzeigen(&bibliothek, &anzahl_lieder);
                 BibliothekAnzeigen();
                 break;
             case 2:
