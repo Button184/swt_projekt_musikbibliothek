@@ -163,23 +163,46 @@ void LiedLoeschen(Lied **bibliothek, int *anzahl_lieder) {
         return;
     }
 
+    Lied temp;
+    *anzahl_lieder = 0;
+    *bibliothek = NULL;
+
+    while (fscanf (fp, "%[^,],%[^,],%[^,],%d,%d\n",
+        temp.titel, temp.interpret, temp.album, &temp.lieddauer, &temp.erscheinungsjahr) == 5) {
+            *bibliothek = realloc(*bibliothek, (*anzahl_lieder + 1) * sizeof(Lied));
+            if (*bibliothek == NULL) {
+                printf("Fehler beim Laden deiner Bibliotek\n");
+                fclose(fp);
+                return;
+            }
+
+            (*bibliothek)[*anzahl_lieder] = temp;
+            (*anzahl_lieder)++;
+        }
+        fclose(fp);
+
     if (*anzahl_lieder == 0) {
         printf("Deine Bibliothek ist leer :/\n");
         return;
     }
-
-    int num;
 
     printf("\n-------- Deine Bibliothek (Meta-Daten gekürzt) --------\n");
     for (int i = 0; i < *anzahl_lieder; i++) {
         printf("%d. %s - %s\n", i + 1, (*bibliothek)[i].titel, (*bibliothek)[i].interpret);
     }
 
+    int num;
     printf("Wähle ein Lied aus der Liste aus, dass du löschen möchtest und gebe die Liednummer ein: ");
     scanf("%d", &num);
     getchar();
 
+    //Löschen, indem Pointer überschrieben werden
+    for (int i = num -1; i < *anzahl_lieder - 1; i++) {
+        (*bibliothek)[i] = (*bibliothek)[i + 1];
+    }
     (*anzahl_lieder)--;
+
+    //Datei neu schreiben
 
 
     printf("Das Lied wurde gelöscht. Drücke eine Taste, um zum Menü zu gelangen.\n");
@@ -259,6 +282,7 @@ int main(void) {
                 exit(1);
             default:
                 printf("FEHLER: Eingabe ist ungültig!\n");
+                return;
         }
     } while (auswahl != 0);
     free(bibliothek);
