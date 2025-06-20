@@ -94,7 +94,11 @@ void BibliothekAnzeigen(void) {
 
         //Einlesen von Lied bis Trennzeichen (,) und das für alle 5 Columns
     while (fscanf (fp, "%[^,],%[^,],%[^,],%d,%d\n",
-        temp.titel, temp.interpret, temp.album, &temp.lieddauer, &temp.erscheinungsjahr) == 5) {
+        temp.titel,
+        temp.interpret,
+        temp.album,
+        &temp.lieddauer,
+        &temp.erscheinungsjahr) == 5) {
             printf("\nLied %d \n", ++i);
             printf("Titel: %s\n",temp.titel);
             printf("Interpret: %s\n", temp.interpret);
@@ -139,9 +143,11 @@ void LiedHinzufuegen(Lied **bibliothek, int *anzahl_lieder) {
     }
 
     fprintf(fp, "%s,%s,%s,%d,%d\n",
-        (*bibliothek)[*anzahl_lieder].titel, (*bibliothek)[*anzahl_lieder].interpret,
-        (*bibliothek)[*anzahl_lieder].album, (*bibliothek)[*anzahl_lieder].lieddauer,
-        (*bibliothek)[*anzahl_lieder].erscheinungsjahr );
+        (*bibliothek)[*anzahl_lieder].titel,
+        (*bibliothek)[*anzahl_lieder].interpret,
+        (*bibliothek)[*anzahl_lieder].album,
+        (*bibliothek)[*anzahl_lieder].lieddauer,
+        (*bibliothek)[*anzahl_lieder].erscheinungsjahr);
 
     fclose(fp);
     printf("\nDein Lied wurde zur Playlist hinzugefügt!\n");
@@ -168,7 +174,11 @@ void LiedLoeschen(Lied **bibliothek, int *anzahl_lieder) {
     *bibliothek = NULL;
 
     while (fscanf (fp, "%[^,],%[^,],%[^,],%d,%d\n",
-        temp.titel, temp.interpret, temp.album, &temp.lieddauer, &temp.erscheinungsjahr) == 5) {
+        temp.titel,
+        temp.interpret,
+        temp.album,
+        &temp.lieddauer,
+        &temp.erscheinungsjahr) == 5) {
             *bibliothek = realloc(*bibliothek, (*anzahl_lieder + 1) * sizeof(Lied));
             if (*bibliothek == NULL) {
                 printf("Fehler beim Laden deiner Bibliotek\n");
@@ -188,7 +198,9 @@ void LiedLoeschen(Lied **bibliothek, int *anzahl_lieder) {
 
     printf("\n-------- Deine Bibliothek (Meta-Daten gekürzt) --------\n");
     for (int i = 0; i < *anzahl_lieder; i++) {
-        printf("%d. %s - %s\n", i + 1, (*bibliothek)[i].titel, (*bibliothek)[i].interpret);
+        printf("%d. %s - %s\n", i + 1,
+            (*bibliothek)[i].titel,
+            (*bibliothek)[i].interpret);
     }
 
     int num;
@@ -203,11 +215,20 @@ void LiedLoeschen(Lied **bibliothek, int *anzahl_lieder) {
     (*anzahl_lieder)--;
 
     //Datei neu schreiben
+    fp = fopen(datei, "w");
+    for (int i = 0; i < anzahl_lieder; i++) {
+        fprintf(fp, "%s,%s,%s,%d,%d\n",
+        (*bibliothek)[i].titel,
+        (*bibliothek)[i].interpret,
+        (*bibliothek)[i].album,
+        (*bibliothek)[i].lieddauer,
+        (*bibliothek)[i].erscheinungsjahr);
+    }
+    fclose(fp);
 
-
-    printf("Das Lied wurde gelöscht. Drücke eine Taste, um zum Menü zu gelangen.\n");
+    printf("Das Lied wurde gelöscht.");
+    printf("Drücke eine Taste, um zum Menü zu gelangen.\n");
     getchar();
-
 }
 
 // --- Meta-Daten suchen ---
