@@ -107,7 +107,7 @@ void BibliothekAnzeigen(void) {
             printf("Erschienen: %d\n", temp.erscheinungsjahr);
     }
     if (i == 0) {
-        printf("Error: Deine Bibliothek ist leer.\n");
+        printf("Deine Bibliothek ist leer.\n");
     }
     fclose(fp);
 
@@ -216,7 +216,7 @@ void LiedLoeschen(Lied **bibliothek, int *anzahl_lieder) {
 
     //Datei neu schreiben
     fp = fopen(datei, "w");
-    for (int i = 0; i < anzahl_lieder; i++) {
+    for (int i = 0; i < *anzahl_lieder; i++) {
         fprintf(fp, "%s,%s,%s,%d,%d\n",
         (*bibliothek)[i].titel,
         (*bibliothek)[i].interpret,
@@ -226,7 +226,7 @@ void LiedLoeschen(Lied **bibliothek, int *anzahl_lieder) {
     }
     fclose(fp);
 
-    printf("Das Lied wurde gelöscht.");
+    printf("\nDas Lied wurde gelöscht.\n");
     printf("Drücke eine Taste, um zum Menü zu gelangen.\n");
     getchar();
 }
