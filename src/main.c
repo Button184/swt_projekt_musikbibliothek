@@ -261,9 +261,33 @@ void LiedLoeschen(Lied **bibliothek, int *anzahl_lieder) {
 //}
 
 // --- Bibliothek löschen ---
-//void BibliothekLoeschen(Lied **bibliothek, int *anzahl_lieder) {
-//printf("LEER\n");
-//}
+void BibliothekLoeschen(Lied **bibliothek, int *anzahl_lieder) {
+    char abfrage;
+
+    printf("\n\nAchtung! Möchtest du wirklich die Bibliothek %s und seine dazugehörigen Daten löschen? (j/n)\n\n", datei);
+    scanf("%c", abfrage);
+    getchar();
+    if (abfrage != 'j' && abfrage != 'J') {
+        printf("Die Aktion wurde abgebrochen.\n");
+        printf("Drücke eine Taste, um zum Menü zu gelangen.\n");
+        getchar();
+        return;
+    }
+
+    // Bibliothek löschen mit remove-Funktion aus stdio-Library
+    if (remove(datei) == 0) {
+        printf("Deine Bibliothek wurde soeben gelöscht.\n");
+        //Speicherplatz freigeben
+        free (*bibliothek);
+        *bibliothek = NULL;
+        *anzahl_lieder = 0;
+    }
+
+    printf("\nDas Lied wurde gelöscht.\n");
+    printf("Drücke eine Taste, um zum Menü zu gelangen.\n");
+    getchar();
+
+}
 
 // --- Aktion speichern ---
 // Es soll alles Temporäre vom Arbeitsspeicher fest gespeichert werden
@@ -317,7 +341,7 @@ int main(void) {
                 //MetaDatenSuchen(&bibliothek, &anzahl_lieder);
                 break;
             case 6:
-                //BibliothekLoeschen(&bibliothek, &anzahl_lieder);
+                BibliothekLoeschen(&bibliothek, &anzahl_lieder);
                 break;
             case 7:
                 //Speichern(&bibliothek, &anzahl_lieder);
