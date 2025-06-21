@@ -1,7 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-#define MAX_LAENGE 100
+#define MAX_LAENGE 200
 
 // --- Struct Lied ---
 typedef struct {
@@ -20,11 +20,11 @@ char datei[MAX_LAENGE + 10]; // erweitert um einen Puffer für .csv-Endung und \
 void BibliothekErstellen();
 void BibliothekAnzeigen(void);
 void LiedHinzufuegen(Lied **bibliothek, int *anzahl_lieder);
-void MetaDatenAendern(Lied **bibliothek, int *anzahl_lieder);
+//(void MetaDatenAendern(Lied **bibliothek, int *anzahl_lieder);)
 void LiedLoeschen(Lied **bibliothek, int *anzahl_lieder);
-void MetaDatenSuchen(Lied **bibliothek, int *anzahl_lieder);
+//void MetaDatenSuchen(Lied **bibliothek, int *anzahl_lieder);
 void BibliothekLoeschen(Lied **bibliothek, int *anzahl_lieder);
-void Speichern(Lied **bibliothek, int *anzahl_lieder);
+//void Speichern(Lied **bibliothek, int *anzahl_lieder);
 
 // ----- Funktionsdefinitionen -----
 
@@ -123,7 +123,7 @@ void LiedHinzufuegen(Lied **bibliothek, int *anzahl_lieder) {
     *bibliothek = realloc(*bibliothek, (*anzahl_lieder + 1) * sizeof(Lied));
     Lied *lied = &(*bibliothek) [*anzahl_lieder];
 
-    printf("\n Füge ein neues Lied hinzu:\n");
+    printf("\nFüge ein neues Lied hinzu:\n");
 
     printf("Titel: ");
     scanf(" %[^\n]", (*bibliothek)[*anzahl_lieder].titel);
@@ -153,6 +153,10 @@ void LiedHinzufuegen(Lied **bibliothek, int *anzahl_lieder) {
     printf("\nDein Lied wurde zur Playlist hinzugefügt!\n");
 
     (*anzahl_lieder)++;
+
+    printf("\nDrücke eine Taste, um zum Menü zu gelangen.\n");
+    getchar();
+    return;
 }
 
 // --- Meta-Daten ändern ---
@@ -196,17 +200,39 @@ void LiedLoeschen(Lied **bibliothek, int *anzahl_lieder) {
         return;
     }
 
-    printf("\n-------- Deine Bibliothek (Meta-Daten gekürzt) --------\n");
+    printf("\n-------- Deine aktuelle Bibliothek --------\n");
     for (int i = 0; i < *anzahl_lieder; i++) {
         printf("%d. %s - %s\n", i + 1,
             (*bibliothek)[i].titel,
-            (*bibliothek)[i].interpret);
+            (*bibliothek)[i].interpret,
+            (*bibliothek)[i].album,
+            (*bibliothek)[i].lieddauer,
+            (*bibliothek)[i].erscheinungsjahr);
     }
 
     int num;
     printf("Wähle ein Lied aus der Liste aus, dass du löschen möchtest und gebe die Liednummer ein: ");
     scanf("%d", &num);
     getchar();
+
+    if (num < 1 || num > *anzahl_lieder) {
+        printf("\nFehler: Deine Eingabe ist falsch oder die Zahl ist zu hoch!\n");
+        printf("Drücke eine Taste, um zum Menü zu gelangen.\n");
+        getchar();
+        return;
+    }
+
+    //Erneute abfrage
+    printf("Bist du dir sicher, dass du das lied löschen willst? (j/n): ");
+    char abfrage;
+    scanf("%c", &abfrage);
+    getchar();
+    if (abfrage != 'j' && abfrage != 'J') {
+        printf("Alles klar, das Lied wird nicht gelöscht.\n");
+        printf("Drücke eine Taste, um zum Menü zu gelangen.\n");
+        getchar();
+        return;
+    }
 
     //Löschen, indem Pointer überschrieben werden
     for (int i = num -1; i < *anzahl_lieder - 1; i++) {
