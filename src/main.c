@@ -43,7 +43,7 @@ void ProgrammStart(void) {
     if (auswahl == 1) {
         printf("Gebe den Namen deiner Bibliothek ein (ohne .csv-Endung!):\n");
         scanf("%s", name); // KI-Hilfe
-        snprintf(datei, MAX_LAENGE, "%s.csv", name); // KI-Hilfe
+        snprintf(datei, sizeof(datei), "%s.csv", name); // KI-Hilfe
 
         fp = fopen(datei, "r");
         if (fp == NULL) {
@@ -57,7 +57,7 @@ void ProgrammStart(void) {
     } else if (auswahl == 2) {
         printf("Gebe deiner Bibliothek einen Namen (ohne .csv-Endung!): ");
         scanf("%s", name);
-        snprintf(datei, MAX_LAENGE, "%s.csv",name); // KI-Hilfe
+        snprintf(datei, sizeof(datei), "%s.csv",name); // KI-Hilfe
         BibliothekErstellen();
     } else {
         printf("Eingabe ungültig\n");
@@ -158,9 +158,9 @@ void LiedHinzufuegen(Lied **bibliothek, int *anzahl_lieder) {
 }
 
 // --- Meta-Daten ändern ---
-void MetaDatenAendern(Lied **bibliothek, int *anzahl_lieder) {
-    printf("LEER\n");
-}
+//void MetaDatenAendern(Lied **bibliothek, int *anzahl_lieder) {
+//    printf("LEER\n");
+//}
 
 // --- Lied löschen ---
 void LiedLoeschen(Lied **bibliothek, int *anzahl_lieder) {
@@ -200,7 +200,7 @@ void LiedLoeschen(Lied **bibliothek, int *anzahl_lieder) {
 
     printf("\n-------- Deine aktuelle Bibliothek --------\n");
     for (int i = 0; i < *anzahl_lieder; i++) {
-        printf("%d. %s - %s\n", i + 1,
+        printf("%d. %s - %s - %s - %d - %d\n", i + 1,
             (*bibliothek)[i].titel,
             (*bibliothek)[i].interpret,
             (*bibliothek)[i].album,
@@ -256,20 +256,20 @@ void LiedLoeschen(Lied **bibliothek, int *anzahl_lieder) {
 }
 
 // --- Meta-Daten suchen ---
-void MetaDatenSuchen(Lied **bibliothek, int *anzahl_lieder) {
-printf("LEER\n");
-}
+//void MetaDatenSuchen(Lied **bibliothek, int *anzahl_lieder) {
+//printf("LEER\n");
+//}
 
 // --- Bibliothek löschen ---
-void BibliothekLoeschen(Lied **bibliothek, int *anzahl_lieder) {
-printf("LEER\n");
-}
+//void BibliothekLoeschen(Lied **bibliothek, int *anzahl_lieder) {
+//printf("LEER\n");
+//}
 
 // --- Aktion speichern ---
 // Es soll alles Temporäre vom Arbeitsspeicher fest gespeichert werden
-void Speichern(Lied **bibliothek, int *anzahl_lieder){
-printf("LEER\n");
-}
+//void Speichern(Lied **bibliothek, int *anzahl_lieder){
+//printf("LEER\n");
+//}
 
 // ----- Mainfunktion -----
 
@@ -308,28 +308,28 @@ int main(void) {
                 LiedHinzufuegen(&bibliothek, &anzahl_lieder);
                 break;
             case 3:
-                MetaDatenAendern(&bibliothek, &anzahl_lieder);
+                //MetaDatenAendern(&bibliothek, &anzahl_lieder);
                 break;
             case 4:
                 LiedLoeschen(&bibliothek, &anzahl_lieder);
                 break;
             case 5:
-                MetaDatenSuchen(&bibliothek, &anzahl_lieder);
+                //MetaDatenSuchen(&bibliothek, &anzahl_lieder);
                 break;
             case 6:
-                BibliothekLoeschen(&bibliothek, &anzahl_lieder);
+                //BibliothekLoeschen(&bibliothek, &anzahl_lieder);
                 break;
             case 7:
-                Speichern(&bibliothek, &anzahl_lieder);
+                //Speichern(&bibliothek, &anzahl_lieder);
                 break;
             case 8:
                 printf("\nAuf Wiedersehen!");
                 exit(1);
             default:
                 printf("FEHLER: Eingabe ist ungültig!\n");
-                return;
+                return 1;
         }
     } while (auswahl != 0);
     free(bibliothek);
-    return 1;
+    return 0;
 }
