@@ -265,7 +265,7 @@ void BibliothekLoeschen(Lied **bibliothek, int *anzahl_lieder) {
     char abfrage;
 
     printf("\n\nAchtung! Möchtest du wirklich die Bibliothek %s und seine dazugehörigen Daten löschen? (j/n)\n\n", datei);
-    scanf("%c", abfrage);
+    scanf("%c", &abfrage);
     getchar();
     if (abfrage != 'j' && abfrage != 'J') {
         printf("Die Aktion wurde abgebrochen.\n");
@@ -283,7 +283,6 @@ void BibliothekLoeschen(Lied **bibliothek, int *anzahl_lieder) {
         *anzahl_lieder = 0;
     }
 
-    printf("\nDas Lied wurde gelöscht.\n");
     printf("Drücke eine Taste, um zum Menü zu gelangen.\n");
     getchar();
 
