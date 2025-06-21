@@ -121,7 +121,6 @@ void BibliothekAnzeigen(void) {
 void LiedHinzufuegen(Lied **bibliothek, int *anzahl_lieder) {
 
     *bibliothek = realloc(*bibliothek, (*anzahl_lieder + 1) * sizeof(Lied));
-    Lied *lied = &(*bibliothek) [*anzahl_lieder];
 
     printf("\nFüge ein neues Lied hinzu:\n");
 
@@ -156,7 +155,6 @@ void LiedHinzufuegen(Lied **bibliothek, int *anzahl_lieder) {
 
     printf("\nDrücke eine Taste, um zum Menü zu gelangen.\n");
     getchar();
-    return;
 }
 
 // --- Meta-Daten ändern ---
@@ -333,5 +331,5 @@ int main(void) {
         }
     } while (auswahl != 0);
     free(bibliothek);
-    return 0;
+    return 1;
 }
