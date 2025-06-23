@@ -274,3 +274,60 @@ void BibliothekLoeschen(Lied **bibliothek, int *anzahl_lieder) {
     getchar();
 
 }
+
+// ----- Mainfunktion -----
+
+int main(void) {
+
+    Lied *bibliothek = NULL;
+    int auswahl;
+    int anzahl_lieder = 0;
+
+    ProgrammStart();
+
+    do{
+        printf("\n---------------------------------\n");
+        printf("Willkommen in der Musikbibliothek\n");
+        printf("---------------------------------\n");
+        printf("\n");
+        printf("Wähle eine Aktion aus:\n");
+        printf("1. Bibliothek Anzeigen\n");
+        printf("2. Lied Hinzufügen\n");
+        printf("3. Lied löschen\n");
+        printf("4. Bibliothek löschen\n");
+        printf("5. Programm beenden\n");
+        printf("\nAktion: ");
+
+        scanf("%d", &auswahl);
+        getchar();
+
+        switch (auswahl) {
+            case 1:
+                BibliothekAnzeigen();
+                break;
+            case 2:
+                LiedHinzufuegen(&bibliothek, &anzahl_lieder);
+                break;
+            case 3:
+                LiedLoeschen(&bibliothek, &anzahl_lieder);
+                break;
+            case 4:
+                BibliothekLoeschen(&bibliothek, &anzahl_lieder);
+                break;
+            case 5:
+                printf("\nAuf Wiedersehen!");
+                exit(1);
+            case 7:
+                //MetaDatenAendern(&bibliothek, &anzahl_lieder);
+                break;
+            case 6:
+                //MetaDatenSuchen(&bibliothek, &anzahl_lieder);
+                break;
+            default:
+                printf("FEHLER: Eingabe ist ungültig!\n");
+                return 1;
+        }
+    } while (auswahl != 0);
+    free(bibliothek);
+    return 0;
+}

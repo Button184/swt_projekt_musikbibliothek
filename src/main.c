@@ -288,12 +288,6 @@ void BibliothekLoeschen(Lied **bibliothek, int *anzahl_lieder) {
 
 }
 
-// --- Aktion speichern ---
-// Es soll alles Temporäre vom Arbeitsspeicher fest gespeichert werden
-//void Speichern(Lied **bibliothek, int *anzahl_lieder){
-//printf("LEER\n");
-//}
-
 // ----- Mainfunktion -----
 
 int main(void) {
@@ -312,12 +306,9 @@ int main(void) {
         printf("Wähle eine Aktion aus:\n");
         printf("1. Bibliothek Anzeigen\n");
         printf("2. Lied Hinzufügen\n");
-        printf("3. Meta-Daten ändern\n");
-        printf("4. Lied löschen\n");
-        printf("5. Nach Lied oder Meta-Daten suchen\n");
-        printf("6. Bibliothek löschen\n");
-        printf("7. Aktion speichern\n");
-        printf("8. Programm beenden\n");
+        printf("3. Lied löschen\n");
+        printf("4. Bibliothek löschen\n");
+        printf("5. Programm beenden\n");
         printf("\nAktion: ");
 
         scanf("%d", &auswahl);
@@ -331,23 +322,20 @@ int main(void) {
                 LiedHinzufuegen(&bibliothek, &anzahl_lieder);
                 break;
             case 3:
-                //MetaDatenAendern(&bibliothek, &anzahl_lieder);
-                break;
-            case 4:
                 LiedLoeschen(&bibliothek, &anzahl_lieder);
                 break;
-            case 5:
-                //MetaDatenSuchen(&bibliothek, &anzahl_lieder);
-                break;
-            case 6:
+            case 4:
                 BibliothekLoeschen(&bibliothek, &anzahl_lieder);
                 break;
-            case 7:
-                //Speichern(&bibliothek, &anzahl_lieder);
-                break;
-            case 8:
+            case 5:
                 printf("\nAuf Wiedersehen!");
                 exit(1);
+            case 7:
+                //MetaDatenAendern(&bibliothek, &anzahl_lieder);
+                break;
+            case 6:
+                //MetaDatenSuchen(&bibliothek, &anzahl_lieder);
+                break;
             default:
                 printf("FEHLER: Eingabe ist ungültig!\n");
                 return 1;
