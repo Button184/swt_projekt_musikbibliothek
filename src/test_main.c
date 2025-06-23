@@ -20,11 +20,8 @@ char datei[MAX_LAENGE + 10]; // erweitert um einen Puffer für .csv-Endung und \
 void BibliothekErstellen();
 void BibliothekAnzeigen(void);
 void LiedHinzufuegen(Lied **bibliothek, int *anzahl_lieder);
-//(void MetaDatenAendern(Lied **bibliothek, int *anzahl_lieder);)
 void LiedLoeschen(Lied **bibliothek, int *anzahl_lieder);
-//void MetaDatenSuchen(Lied **bibliothek, int *anzahl_lieder);
 void BibliothekLoeschen(Lied **bibliothek, int *anzahl_lieder);
-//void Speichern(Lied **bibliothek, int *anzahl_lieder);
 
 // ----- Funktionsdefinitionen -----
 
@@ -120,7 +117,7 @@ void BibliothekAnzeigen(void) {
 // --- Lied Hinzufügen ---
 void LiedHinzufuegen(Lied **bibliothek, int *anzahl_lieder) {
 
-    *bibliothek = realloc(*bibliothek, (*anzahl_lieder + 1) * sizeof(Lied));
+    *bibliothek = (Lied*) realloc(*bibliothek, (*anzahl_lieder + 1) * sizeof(Lied));
 
     printf("\nFüge ein neues Lied hinzu:\n");
 
@@ -157,11 +154,6 @@ void LiedHinzufuegen(Lied **bibliothek, int *anzahl_lieder) {
     getchar();
 }
 
-// --- Meta-Daten ändern ---
-//void MetaDatenAendern(Lied **bibliothek, int *anzahl_lieder) {
-//    printf("LEER\n");
-//}
-
 // --- Lied löschen ---
 void LiedLoeschen(Lied **bibliothek, int *anzahl_lieder) {
 
@@ -181,7 +173,7 @@ void LiedLoeschen(Lied **bibliothek, int *anzahl_lieder) {
         temp.album,
         &temp.lieddauer,
         &temp.erscheinungsjahr) == 5) {
-            *bibliothek = realloc(*bibliothek, (*anzahl_lieder + 1) * sizeof(Lied));
+            *bibliothek = (Lied*) realloc(*bibliothek, (*anzahl_lieder + 1) * sizeof(Lied));
             if (*bibliothek == NULL) {
                 printf("Fehler beim Laden deiner Bibliotek\n");
                 fclose(fp);
@@ -255,11 +247,6 @@ void LiedLoeschen(Lied **bibliothek, int *anzahl_lieder) {
     getchar();
 }
 
-// --- Meta-Daten suchen ---
-//void MetaDatenSuchen(Lied **bibliothek, int *anzahl_lieder) {
-//printf("LEER\n");
-//}
-
 // --- Bibliothek löschen ---
 void BibliothekLoeschen(Lied **bibliothek, int *anzahl_lieder) {
     char abfrage;
@@ -286,61 +273,4 @@ void BibliothekLoeschen(Lied **bibliothek, int *anzahl_lieder) {
     printf("Drücke eine Taste, um zum Menü zu gelangen.\n");
     getchar();
 
-}
-
-// ----- Mainfunktion -----
-
-int main(void) {
-
-    Lied *bibliothek = NULL;
-    int auswahl;
-    int anzahl_lieder = 0;
-
-    ProgrammStart();
-
-    do{
-        printf("\n---------------------------------\n");
-        printf("Willkommen in der Musikbibliothek\n");
-        printf("---------------------------------\n");
-        printf("\n");
-        printf("Wähle eine Aktion aus:\n");
-        printf("1. Bibliothek Anzeigen\n");
-        printf("2. Lied Hinzufügen\n");
-        printf("3. Lied löschen\n");
-        printf("4. Bibliothek löschen\n");
-        printf("5. Programm beenden\n");
-        printf("\nAktion: ");
-
-        scanf("%d", &auswahl);
-        getchar();
-
-        switch (auswahl) {
-            case 1:
-                BibliothekAnzeigen();
-                break;
-            case 2:
-                LiedHinzufuegen(&bibliothek, &anzahl_lieder);
-                break;
-            case 3:
-                LiedLoeschen(&bibliothek, &anzahl_lieder);
-                break;
-            case 4:
-                BibliothekLoeschen(&bibliothek, &anzahl_lieder);
-                break;
-            case 5:
-                printf("\nAuf Wiedersehen!");
-                exit(1);
-            case 7:
-                //MetaDatenAendern(&bibliothek, &anzahl_lieder);
-                break;
-            case 6:
-                //MetaDatenSuchen(&bibliothek, &anzahl_lieder);
-                break;
-            default:
-                printf("FEHLER: Eingabe ist ungültig!\n");
-                return 1;
-        }
-    } while (auswahl != 0);
-    free(bibliothek);
-    return 0;
 }
