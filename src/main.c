@@ -20,11 +20,8 @@ char datei[MAX_LAENGE + 10]; // erweitert um einen Puffer für .csv-Endung und \
 void BibliothekErstellen();
 void BibliothekAnzeigen(void);
 void LiedHinzufuegen(Lied **bibliothek, int *anzahl_lieder);
-//(void MetaDatenAendern(Lied **bibliothek, int *anzahl_lieder);)
 void LiedLoeschen(Lied **bibliothek, int *anzahl_lieder);
-//void MetaDatenSuchen(Lied **bibliothek, int *anzahl_lieder);
 void BibliothekLoeschen(Lied **bibliothek, int *anzahl_lieder);
-//void Speichern(Lied **bibliothek, int *anzahl_lieder);
 
 // ----- Funktionsdefinitionen -----
 
@@ -79,7 +76,8 @@ void BibliothekErstellen(void) {
 }
 
 // --- Bibliothek Anzeigen ---
-// Daten werden in eine temporäre Variable geladen und wieder an den dynamischen Array zurückgegeben
+// Daten werden in eine temporäre Variable geladen
+//und wieder an den dynamischen Array zurückgegeben
 void BibliothekAnzeigen(void) {
     int i = 0;
     Lied temp;
@@ -92,7 +90,7 @@ void BibliothekAnzeigen(void) {
 
     printf("\n-------- Deine Bibliothek --------\n");
 
-        //Einlesen von Lied bis Trennzeichen (,) und das für alle 5 Columns
+    //Einlesen von Lied bis Trennzeichen (,) und das für alle 5 Columns
     while (fscanf (fp, "%[^,],%[^,],%[^,],%d,%d\n",
         temp.titel,
         temp.interpret,
@@ -123,7 +121,6 @@ void LiedHinzufuegen(Lied **bibliothek, int *anzahl_lieder) {
     *bibliothek = realloc(*bibliothek, (*anzahl_lieder + 1) * sizeof(Lied));
 
     printf("\nFüge ein neues Lied hinzu:\n");
-
     printf("Titel: ");
     scanf(" %[^\n]", (*bibliothek)[*anzahl_lieder].titel);
     printf("Interpet: ");
@@ -156,11 +153,6 @@ void LiedHinzufuegen(Lied **bibliothek, int *anzahl_lieder) {
     printf("\nDrücke eine Taste, um zum Menü zu gelangen.\n");
     getchar();
 }
-
-// --- Meta-Daten ändern ---
-//void MetaDatenAendern(Lied **bibliothek, int *anzahl_lieder) {
-//    printf("LEER\n");
-//}
 
 // --- Lied löschen ---
 void LiedLoeschen(Lied **bibliothek, int *anzahl_lieder) {
@@ -255,11 +247,6 @@ void LiedLoeschen(Lied **bibliothek, int *anzahl_lieder) {
     getchar();
 }
 
-// --- Meta-Daten suchen ---
-//void MetaDatenSuchen(Lied **bibliothek, int *anzahl_lieder) {
-//printf("LEER\n");
-//}
-
 // --- Bibliothek löschen ---
 void BibliothekLoeschen(Lied **bibliothek, int *anzahl_lieder) {
     char abfrage;
@@ -330,12 +317,6 @@ int main(void) {
             case 5:
                 printf("\nAuf Wiedersehen!");
                 exit(1);
-            case 7:
-                //MetaDatenAendern(&bibliothek, &anzahl_lieder);
-                break;
-            case 6:
-                //MetaDatenSuchen(&bibliothek, &anzahl_lieder);
-                break;
             default:
                 printf("FEHLER: Eingabe ist ungültig!\n");
                 return 1;
