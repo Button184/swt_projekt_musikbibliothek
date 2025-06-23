@@ -62,23 +62,25 @@ TEST_CASE("Ein Lied wird korrekt entfernt", "[LiedLoeschen]") {
 
     //Temporäre Datei
     strcpy(datei, "test_lieder.csv");
+    remove(datei);
     FILE* fp = fopen(datei,"w");
-    fprintf(fp,"testTitel1,testInterpret1,testAlbum1,testDauer1,testJahr1\n");
-    fprintf(fp,"testTitel2,testInterpret2,testAlbum2,testDauer2,testJahr2\n");
+    fprintf(fp,"testTitel1,testInter1,testAlbum1,100,2001\n");
+    fprintf(fp,"testTitel2,testInter2,testAlbum2,200,2001\n");
     fclose(fp);
 
     Lied *bibliothek = NULL;
     int anzahl_lieder = 0;
 
-        //Eingabe simulieren
-    FILE *temp = tmpfile();
-    fputs("1", temp);
-    rewind(temp);
-    stdin = temp;
+    //Eingabe simulieren (KI-HILFE)
+    FILE* eingabedatei = fopen("eingabe.txt", "w");
+    fputs("1\nj\n", eingabedatei);
+    fclose(eingabedatei);
+    freopen("eingabe.txt", "r", stdin);
 
     LiedLoeschen(&bibliothek, &anzahl_lieder);
 
     REQUIRE(anzahl_lieder == 1);
+    REQUIRE(bibliothek != NULL);
     CHECK(strcmp(bibliothek[0].titel, "testTitel2") == 0);
 
     free(bibliothek);
@@ -88,19 +90,29 @@ TEST_CASE("Ein Lied wird korrekt entfernt", "[LiedLoeschen]") {
 
 
 TEST_CASE("Eine Bibliothek wird korrekt entfernt", "[BibliothekLoeschen]") {
+
+    //Temporäre Bibliothek
+    strcpy(datei, "test_bib.csv");
+    FILE* fp = fopen(datei, "w");
+    fclose(fp);
+
     int anzahl_bib = 2;
     Lied *bibliothek = (Lied*) malloc(sizeof(Lied) *anzahl_bib);
 
     strcpy(bibliothek[0].titel, "Bib1");
     strcpy(bibliothek[1].titel, "Bib2");
 
-    //Eingabe simulieren
-    FILE *temp = tmpfile();
-    fputs("j", temp);
-    rewind(temp);
-    stdin = temp;
+    //Eingabe simulieren (KI-HILFE)
+    FILE *eingabedatei = fopen("eingabe.txt", "w");
+    fputs("j", eingabedatei);
+    rewind(eingabedatei);
+    freopen("eingabe.txt", "r", stdin);
 
     BibliothekLoeschen(&bibliothek, &anzahl_bib);
 
     CHECK(anzahl_bib == 0);
+    CHECK(bibliothek == NULL);
+
+    remove(datei);
+    remove("input.txt");
 }
