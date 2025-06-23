@@ -60,25 +60,30 @@ TEST_CASE("Ein Lied wird korrekt hinzugefügt", "[LiedHinzufuegen]") {
 
 TEST_CASE("Ein Lied wird korrekt entfernt", "[LiedLoeschen]") {
 
+    //Temporäre Datei
+    strcpy(datei, "test_lieder.csv");
+    FILE* fp = fopen(datei,"w");
+    fprintf(fp,"testTitel1,testInterpret1,testAlbum1,testDauer1,testJahr1\n");
+    fprintf(fp,"testTitel2,testInterpret2,testAlbum2,testDauer2,testJahr2\n");
+    fclose(fp);
+
     Lied *bibliothek = NULL;
     int anzahl_lieder = 0;
 
-    anzahl_lieder = 2;
-    bibliothek = (Lied*) malloc(sizeof(Lied) *anzahl_lieder); // KI-Hilfe
-
-    strcpy(bibliothek[0].titel, "tesetTitel1");
-    strcpy(bibliothek[1].titel, "testTitel2");
-    LiedLoeschen(&bibliothek, &anzahl_lieder);
-
-    //Eingabe simulieren
+        //Eingabe simulieren
     FILE *temp = tmpfile();
     fputs("1", temp);
     rewind(temp);
     stdin = temp;
 
+    LiedLoeschen(&bibliothek, &anzahl_lieder);
+
+    REQUIRE(anzahl_lieder == 1);
     CHECK(strcmp(bibliothek[0].titel, "testTitel2") == 0);
 
     free(bibliothek);
+    remove(datei);
+    remove("eingabe.txt");
 }
 
 
