@@ -5,6 +5,7 @@ extern "C" {
 }
 
 TEST_CASE("Ein Lied wird korrekt hinzugefügt", "[LiedHinzufuegen]") {
+
     strcpy(datei, "test_liederstellung.csv");
     remove(datei);
 
@@ -59,15 +60,42 @@ TEST_CASE("Ein Lied wird korrekt hinzugefügt", "[LiedHinzufuegen]") {
 
 TEST_CASE("Ein Lied wird korrekt entfernt", "[LiedLoeschen]") {
 
+    Lied *bibliothek = NULL;
+    int anzahl_lieder = 0;
+
+    anzahl_lieder = 2;
+    bibliothek = (Lied*) malloc(sizeof(Lied) *anzahl_lieder); // KI-Hilfe
+
+    strcpy(bibliothek[0].titel, "tesetTitel1");
+    strcpy(bibliothek[1].titel, "testTitel2");
+    LiedLoeschen(&bibliothek, &anzahl_lieder);
+
+    //Eingabe simulieren
+    FILE *temp = tmpfile();
+    fputs("1", temp);
+    rewind(temp);
+    stdin = temp;
+
+    CHECK(strcmp(bibliothek[0].titel, "testTitel2") == 0);
+
+    free(bibliothek);
 }
 
-
-TEST_CASE("Eine Bibliothek wird korrekt ausgegeben", "[BibliothekAnzeigen]") {
-
-
-}
 
 TEST_CASE("Eine Bibliothek wird korrekt entfernt", "[BibliothekLoeschen]") {
+    int anzahl_bib = 2;
+    Lied *bibliothek = (Lied*) malloc(sizeof(Lied) *anzahl_bib);
 
+    strcpy(bibliothek[0].titel, "Bib1");
+    strcpy(bibliothek[1].titel, "Bib2");
 
+    //Eingabe simulieren
+    FILE *temp = tmpfile();
+    fputs("j", temp);
+    rewind(temp);
+    stdin = temp;
+
+    BibliothekLoeschen(&bibliothek, &anzahl_bib);
+
+    CHECK(anzahl_bib == 0);
 }
