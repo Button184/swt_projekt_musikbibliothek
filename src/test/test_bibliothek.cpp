@@ -54,7 +54,20 @@ TEST_CASE("Ein Lied wird korrekt hinzugefügt", "[LiedHinzufuegen]") {
 
     fclose(fp);
     remove(datei);
+}
 
+
+TEST_CASE("Ein Lied wird korrekt entfernt", "[LiedLoeschen]") {
+
+}
+
+
+TEST_CASE("Eine Bibliothek wird korrekt ausgegeben", "[BibliothekAnzeigen]") {
+
+
+}
+
+TEST_CASE("Eine Bibliothek wird korrekt entfernt", "[BibliothekLoeschen]") {
 
 
 }
